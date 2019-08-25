@@ -5,7 +5,7 @@ from .models import Image,Category,Location
 # Create your views here.
 def index(request):
     pics = Image.get_all()
-    return render(request, 'index.html', {"pics": pics})
+    return render(request, 'index.html', {"pics":pics})
 
 def search_results(request):
     if 'image' in request.GET and request.GET["image"]:
