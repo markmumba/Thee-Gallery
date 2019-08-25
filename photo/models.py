@@ -1,69 +1,50 @@
 from django.db import models
 
-
-import datetime as dt
-
 # Create your models here.
 
 class Location(models.Model):
-    location = models.CharField(max_length=100)
+    name = models.CharField(max_length = 30)
 
     def __str__(self):
-        return self.location
+        return self.name
 
-    class Meta:
-        ordering = ['location']
-
-    def save_location(self):
+    def location_save():
         self.save()
 
-    @classmethod
-    def delete_location(cls,location):
-        cls.objects.filter(location=location).delete()
-
-    @classmethod
-    def delete_category(cls,category):
-        cls.objects.filter(category=category).delete()
-
-    
 class Category(models.Model):
-    categories =models.CharField(max_length=30)
+    name = models.CharField(max_length = 30)
 
     def __str__(self):
-        return self.categories
+        return self.name
 
-    def save_categories(self):
+    def category_save(self):
         self.save()
-    
 
     @classmethod
-    def delete_category(cls,category):
-        cls.objects.filter(category=category).delete()
-
-
+    def search_by_category(cls,search_term):
+        result = cls.objects.filter(name__icontains=search_term).first()
+        return result
 
 class Image(models.Model):
-
-    image = models.ImageField(upload_to='images/')
-    title=models.CharField(max_length=90)
-    categories = models.ManyToManyField(categories)
-    location = models.ForeignKey(Location,on_delete=models.CASCADE)
-    post_date = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to = 'gallery/')
+    name = models.CharField(max_length = 30)
+    description = models.CharField(max_length = 256)
+    category = models.ManyToManyField(Category)
+    location = models.ForeignKey(Location)
+    #pub_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def save_image(self):
         self.save()
 
+    @classmethod
+    def get_all(cls):
+        photo = cls.objects.all()
+        return photo
 
     @classmethod
-    def all_images(cls):
-        images = cls.objects.all()
-        return images
-
-    @classmethod
-    def search_by_category(cls,search_term):
-        images = cls.objects.filter(categories__category=search_term) 
-
-        return images
+    def get_image_by_category(cls,category):
+        img= cls.objects.filter(category = category).all()
+        return img
