@@ -8,7 +8,7 @@ import datetime as dt
 def home(request):
     pictures=Image.objects.all()
 
-    return render(request,'index.html',{"image":image})
+    return render(request,'index.html',{"images":images})
 
 
 
