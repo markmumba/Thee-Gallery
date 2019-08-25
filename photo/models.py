@@ -4,17 +4,9 @@ from django.db import models
 import datetime as dt
 
 # Create your models here.
-class categories(models.Model):
-    categories =models.CharField(max_length=30)
 
-    def __str__(self):
-        return self.categories
-
-    def save_categories(self):
-        self.save()
-    
 class Location(models.Model):
-    location =models.CharField(max_length=20)
+    location = models.CharField(max_length=100)
 
     def __str__(self):
         return self.location
@@ -28,6 +20,27 @@ class Location(models.Model):
     @classmethod
     def delete_location(cls,location):
         cls.objects.filter(location=location).delete()
+
+    @classmethod
+    def delete_category(cls,category):
+        cls.objects.filter(category=category).delete()
+
+    
+class Category(models.Model):
+    categories =models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.categories
+
+    def save_categories(self):
+        self.save()
+    
+
+    @classmethod
+    def delete_category(cls,category):
+        cls.objects.filter(category=category).delete()
+
+
 
 class Image(models.Model):
 
