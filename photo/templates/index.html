@@ -1,0 +1,37 @@
+{% extends 'base.html'%}
+
+
+{% block content %}
+{{ block.super}}
+
+<div class="container">
+
+  <!-- Looping through news   -->
+  {% for photo_item in images0 %}
+
+ 
+  
+  <div class="row">
+    <!-- displaying News articles -->
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <h2 class="text-center"> {{ photo_item.categories }} </h2>
+    </div>
+
+    <!--Display news Article images  -->
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <img src="{{photo_item.image.url}}" class="img-responsive rounded"  alt="Image">
+    </div>
+
+  </div>
+  
+
+  {% empty %}
+  <div class="row">
+    <h2 class="text-center">There No Pictures</h2>
+  </div>
+
+  {% endfor %}
+
+</div>
+
+{% endblock %}
