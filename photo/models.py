@@ -1,7 +1,7 @@
 from django.db import models
 
 
-import datetime as dt
+
 
 # Create your models here.
 class Location(models.Model):
@@ -45,7 +45,7 @@ class Image(models.Model):
     categories = models.ManyToManyField(Category)
     location = models.ForeignKey(Location,on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/')
-    post_date = models.DateTimeField(auto_now_add=True)
+   
 
     def __str__(self):
         return self.title
