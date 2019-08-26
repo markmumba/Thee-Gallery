@@ -1,50 +1,67 @@
 from django.db import models
 
+
+import datetime as dt
+
 # Create your models here.
-
 class Location(models.Model):
-    name = models.CharField(max_length = 30)
+    location = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return self.location
 
-    def location_save():
-        self.save()
+    class Meta:
+        ordering = ['location']
 
-class Category(models.Model):
-    name = models.CharField(max_length = 30)
-
-    def __str__(self):
-        return self.name
-
-    def category_save(self):
+    def save_location(self):
         self.save()
 
     @classmethod
-    def search_by_category(cls,search_term):
-        result = cls.objects.filter(name__icontains=search_term).first()
-        return result
+    def delete_location(cls,location):
+        cls.objects.filter(location=location).delete()
 
-class Image(models.Model):
-    image = models.ImageField(upload_to = 'gallery/')
-    name = models.CharField(max_length = 30)
-    description = models.CharField(max_length = 256)
-    category = models.ManyToManyField(Category)
-    location = models.ForeignKey(Location)
-    #pub_date = models.DateTimeField(auto_now_add=True)
+    @classmethod
+    def delete_category(cls,name):
+        cls.objects.filter(name = name).delete()
+
+class Category(models.Model):
+    category = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.name
+        return self.category
+
+    def save_category(self):
+        self.save()
+
+    @classmethod
+    def delete_category(cls,category):
+        cls.objects.filter(category=category).delete()
+
+
+        
+
+class Image(models.Model):
+    title=models.CharField(max_length=60)
+    categories = models.ManyToManyField(Category)
+    location = models.ForeignKey(Location,on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/')
+    post_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
 
     def save_image(self):
         self.save()
 
-    @classmethod
-    def get_all(cls):
-        photo = cls.objects.all()
-        return photo
 
     @classmethod
-    def get_image_by_category(cls,category):
-        img= cls.objects.filter(category = category).all()
-        return img
+    def all_images(cls):
+        images = cls.objects.all()
+        return images
+
+    @classmethod
+    def search_by_category(cls,search_term):
+        # images = cls.objects.filter(categories__icontains=search_term)
+        images = cls.objects.filter(categories__category=search_term) 
+
+        return images
