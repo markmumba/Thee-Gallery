@@ -1,35 +1,154 @@
 
+
 {% extends 'base.html'%}
+{% load static %}
+{% block content %} 
 
 
-
-
-{% block content%}
-{{block.super}}
-
-
-  <h1>Welcome To My Photo Gallery</h1>
-  <div class="well">
-    <div class="row">
-      {% for image_item in pics %}
-
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-
-          <div class="card" style="width: 18rem;">
-            <a href="{{image_item.image.url}}" data-lightbox="gallery">
-              <img class="card-img-top" src="{{image_item.image.url}}" alt="Card image cap">
-            </a>
-            <div class="card-body">
-              <h3 class="card-title">{{image_item.name.capitalize}}</h3>
-              <p class="card-text">{{image_item.description}}</p>
-              <button onclick="myFunction()" onmouseout="outFunc()" class="btn btn-outline-info"><span class="tooltiptext" id="myTooltip">Copy to clipboard</span>Copy </button>
-
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-
+<div class="row"style="padding:0 4px;">
+  {% for image_item in pics %}
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"style="padding:0 4px;flex-wrap: wrap;">
+    <img style="width:70%; border-radius:25px " src=" {{image_item.image.url}}" alt="images" data-toggle="modal" data-target="#{{pixels_item.title}}">
+  
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8"style="padding:0 4px;flex: 25%;">
+  
     </div>
   </div>
+</div>
+<div id="{{pixels_item.title}}" class="modal fade bd-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
 
-{% endblock %}
+        <h3 class="modal-title" id="exampleModalCenterTitle">{{ image_item.title }}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            
+        <img style="width:60%;   display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 50%;"src="{{pixels_item.Pixels_image.url}}" alt="check"><br>
+            <h4>Time taken</h4><br>
+            <p>{{image_item.pub_date}}</p><br>
+          <hr>
+          <h4>Image Description</h4><br>
+          <p>{{image_item.post}}</p><br>
+          <hr> 
+          <h4>Location</h4><br>
+          <p>Snapped in {{image_item.Location}}</p><br>
+          <hr>
+          <input type="text" name="" value="" placeholder="{{pixels_item.Pixels_image.url}}" class="text-muted">
+          <button type="button" name="button" class="btn btn-primary btn-lg" value="{{pixels_item.Pixels_image.url}}" onclick="copylink(this.value)">Copy Image Link</button>
+        </div><br><br>
+      </div>
+    </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+{%empty%}
+<div class="row">
+<div class="col-md-12 nuttnhere">
+<h1>Nothing here yet! Give us a while...</h1>
+</div>
+
+</div>
+{%  endfor %}
+</div>
+</div>
+
+
+<script>
+  function copylink(value) {
+    function handler(event){
+        event.clipboardData.setData('text/plain', value);
+        event.preventDefault();
+        document.removeEventListener('copy', handler, true);
+    }
+    document.addEventListener('copy', handler, true);
+    document.execCommand('copy');
+  }
+  </script>
+  <!-- and ends here -->
+  <style>
+    body{
+    color: black;
+    font-family:'Kaushan Script';
+  }
+  /* *{
+    box-sizing: border-box;
+  } */
+  .row {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+    padding: 0 4px;
+  }
+  /* Create four equal columns that sits next to each other */
+  .column {
+    -ms-flex: 25%; /* IE10 */
+    flex: 25%;
+    max-width: 25%;
+    padding: 0 4px;
+  }
+  .column img {
+    margin-top: 8px;
+    vertical-align: middle;
+    width: 100%;
+  }
+  /* Responsive layout - makes a two column-layout instead of four columns */
+  @media screen and (max-width: 800px) {
+    .column {
+      -ms-flex: 50%;
+      flex: 50%;
+      max-width: 50%;
+    }
+  }
+  /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 600px) {
+    .column {
+      -ms-flex: 100%;
+      flex: 100%;
+      max-width: 100%;
+    }
+  }
+  .head{
+    
+    background-size:  cover;
+    color: white;
+    font-size: 3.9em;
+    font-family: 'Cookie' ,cursive;
+    font-style: italic;
+  }
+  .head p{
+    background-color: rgba(0,0,0,0.5)
+  }
+  .galleria{
+    font-size: 4.1em;
+    background-color: rgba(0,0,0,0.5);
+  }
+  /* media query for text */
+  @media screen and (max-width: 900px){
+    .galleria{
+      color: black;
+      font-weight: lighter;
+      font-size: 70px;
+    }
+  }
+  .modal-content{
+    margin: 20%;
+    border: 12%;
+  }
+  nav a{
+    color:black;
+  }
+  </style>
+  
+{%endblock%}
